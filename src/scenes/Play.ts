@@ -66,6 +66,7 @@ export default class Play extends Phaser.Scene {
             });
         }
         if (this.forward!.isDown) {
+            // Isn't there some way to bundle and reassign two properties at once?
             this.spinner!.x += Math.cos(this.spinner!.rotation) * 6;
             this.spinner!.y += Math.sin(this.spinner!.rotation) * 6;
         }

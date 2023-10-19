@@ -9,6 +9,6 @@ const config: Phaser.Types.Core.GameConfig = {
 };
 
 document.title = "Rocket Patrol Remake";
-document.body.style.backgroundColor = "beige";
+document.body.style.backgroundColor = "black";
 
 new Phaser.Game(config);
