@@ -3,9 +3,12 @@ import * as Phaser from "phaser";
 import starfieldUrl from "/assets/starfield.png";
 
 export default class Play extends Phaser.Scene {
+    
+    
     fire?: Phaser.Input.Keyboard.Key;
     left?: Phaser.Input.Keyboard.Key;
     right?: Phaser.Input.Keyboard.Key;
+    forward?: Phaser.Input.Keyboard.Key;
 
     starfield?: Phaser.GameObjects.TileSprite;
     spinner?: Phaser.GameObjects.Shape;
@@ -25,10 +28,8 @@ export default class Play extends Phaser.Scene {
     }
 
     create() {
-        this.fire = this.#addKey("F");
-        this.left = this.#addKey("LEFT");
-        this.right = this.#addKey("RIGHT");
-
+        
+        this.creationOfKeys();
         this.starfield = this.add
             .tileSprite(
                 0,
@@ -41,17 +42,26 @@ export default class Play extends Phaser.Scene {
 
         this.spinner = this.add.rectangle(100, 100, 50, 50, 0xc81b71);
     }
+    creationOfKeys(){
+        this.fire = this.#addKey("F");
+        this.left = this.#addKey("LEFT");
+        this.right = this.#addKey("RIGHT");
+        this.forward = this.#addKey("UP");
+
+    }
 
     update(_timeMs: number, delta: number) {
+        this.receiveInput(delta);
+        
+    }
+    receiveInput (delta:number){
         this.starfield!.tilePositionX -= 4;
-
         if (this.left!.isDown) {
             this.spinner!.rotation -= delta * this.rotationSpeed;
         }
         if (this.right!.isDown) {
             this.spinner!.rotation += delta * this.rotationSpeed;
         }
-
         if (this.fire!.isDown) {
             this.tweens.add({
                 targets: this.spinner,
@@ -59,6 +69,10 @@ export default class Play extends Phaser.Scene {
                 duration: 300,
                 ease: Phaser.Math.Easing.Sine.Out,
             });
+        }
+        if (this.forward!.isDown){
+            this.spinner!.x += Math.cos(this.spinner!.rotation) * 6;
+            this.spinner!.y += Math.sin(this.spinner!.rotation) * 6;
         }
     }
 }
